@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_pension</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_pension` (
+  `pensionid` int(11) DEFAULT NULL,
+  `policynumber` varchar(255) DEFAULT NULL,
+  `relatedclient` varchar(255) DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `startdate` date DEFAULT NULL,
+  `monthly` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_pensioncf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_pensioncf` (
+  `pensionid` int(11) NOT NULL,
+  PRIMARY KEY (`pensionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
