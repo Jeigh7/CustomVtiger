@@ -41,13 +41,18 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
 						       );
 								//echo $sql;
 						 $sql->fetchInto($row);
+						$oDate = new DateTime($row->startdate);
+						$ooDate = new DateTime($row->date);
+						$ssDate = $ooDate->format("d-m-Y");
+						$sDate = $oDate->format("d-m-Y");
+						
 	
    echo $row['firstname'] . "\n";
 	echo $row['lastname'] . "<br><br>"; 
 	 echo "Policy number: " . $row['policynumber'] . "<br><br>"; 
 	  echo $row['isatype'] . ":\n"; 
 	   echo $row['isaname'] . "<br><br>"; 
-		echo "<b>" . "Initial figues as of: " . $row['startdate'] . "</b>" . ".<br>"; 	
+		echo "<b>" . "Initial figues as of: " . $sDate . "</b>" . ".<br>"; 	
 				
 
 
@@ -79,7 +84,7 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
 foreach($sql as $row){
 	?>
    <tr>
-   <td><?php echo $row['date'];?></td>
+   <td><?php echo $ssDate;?></td>
    <td><?php echo $row['newunitvalue'];?></td>
 	<td><?php echo $row['newnumberofunits'];?></td>
 	<td><?php echo $row['newcurrentamount'];?></td>
