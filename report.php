@@ -29,22 +29,23 @@ $clientpolicy = $adb->query("SELECT relatedclient, policynumber
 										
 									
 
-$sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, startdate, unitvalue, numberofunits, currentamount, date, newunitvalue, newnumberofunits, newcurrentamount
-								FROM vtiger_isa, vtiger_addisa, vtiger_contactdetails
-								WHERE vtiger_isa.relatedclient = vtiger_addisa.addrelatedclient
-								AND vtiger_addisa.addrelatedclient = vtiger_contactdetails.contactid
-								AND vtiger_isa.relatedclient = $clientid
+$sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, startdate, unitvalue, numberofunits, currentamount
+								FROM vtiger_isa, vtiger_contactdetails
+								WHERE vtiger_isa.relatedclient = vtiger_contactdetails.contactid
 								AND vtiger_isa.policynumber = $polnum
-								AND vtiger_addisa.addrelatedclient = $clientid
-								AND vtiger_addisa.newpolicynumber = $polnum
-								ORDER BY date ASC"
+								AND vtiger_contactdetails.contactid = $clientid"
 						       );
-								//echo $sql;
-						 $sql->fetchInto($row);
-						$oDate = new DateTime($row->startdate);
-						$ooDate = new DateTime($row['date']);
-						$ssDate = $ooDate->format("d-m-Y");
-						$sDate = $oDate->format("d-m-Y");
+							
+					
+			
+$newsql = $adb->query("SELECT newpolicynumber, addrelatedclient, newunitvalue, newnumberofunits, newcurrentamount, date
+						FROM vtiger_addisa
+						WHERE newpolicynumber = $polnum
+						AND addrelatedclient = $clientid
+						ORDER BY date ASC");
+						
+						
+						$sql->fetchInto($row);
 						
 	
    echo $row['firstname'] . "\n";
@@ -52,7 +53,7 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
 	 echo "Policy number: " . $row['policynumber'] . "<br><br>"; 
 	  echo $row['isatype'] . ":\n"; 
 	   echo $row['isaname'] . "<br><br>"; 
-		echo "<b>" . "Initial figues as of: " . $sDate . "</b>" . ".<br>"; 	
+		echo "<b>" . "Initial figues as of: " . $row['startdate'] . "</b>" . ".<br>"; 	
 				
 
 
@@ -71,6 +72,10 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
  </table> 
  <br>
  <br>
+ <?php 
+ $nrows = $adb->num_rows($newsql);
+ if ($nrows > 0){
+	 ?>
 
  <b> New Figures:</b>
  <table  style="width:100%">
@@ -80,11 +85,15 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
     <th>Number of Units</th> 
     <th>Total Value (£)</th>
 	</tr>
+	<?php;
+ }
+ ?>
  <?php
-foreach($sql as $row){
+foreach($newsql as $row){
 	?>
    <tr>
-   <td><?php echo $ssDate;?></td>
+   <td><?php $newsql->fetchInto($row);
+   echo $row['date'];?></td>
    <td><?php echo $row['newunitvalue'];?></td>
 	<td><?php echo $row['newnumberofunits'];?></td>
 	<td><?php echo $row['newcurrentamount'];?></td>
