@@ -42,7 +42,7 @@ $sql = $adb->query("SELECT firstname, lastname, policynumber, isatype, isaname, 
 								//echo $sql;
 						 $sql->fetchInto($row);
 						$oDate = new DateTime($row->startdate);
-						$ooDate = new DateTime($row->date);
+						$ooDate = new DateTime($row['date']);
 						$ssDate = $ooDate->format("d-m-Y");
 						$sDate = $oDate->format("d-m-Y");
 						
